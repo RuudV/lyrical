@@ -1,16 +1,26 @@
-import {AppComponent} from './app.component';
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {AuthGuard} from './modules/auth/guards';
+import {TokenFragmentResolver} from './modules/auth/resolvers/token-fragment.resolver';
 
 const appRoutes: Routes = [
   {
     path: '',
-    component: AppComponent,
-    canActivate: [AuthGuard]
+    resolve: {
+      authToken: TokenFragmentResolver
+    },
+    pathMatch: 'full',
+    redirectTo: '/player'
+  },
+  {
+    path: 'login',
+    loadChildren: './pages/login/login.module#LoginModule'
   },
   {
     path: 'player',
+    resolve: {
+      authToken: TokenFragmentResolver
+    },
     canActivateChild: [AuthGuard],
     loadChildren: './pages/player/player.module#PlayerModule'
   },

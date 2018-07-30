@@ -33,7 +33,7 @@ export class AuthService {
       `&show_dialog=${this.authSpotifyConstants.show_dialog}`;
 
     const localToken = sessionStorage.getItem(this.authSpotifyConstants.namespace);
-    this.authToken = !localToken ? JSON.parse(localToken) : this.authToken;
+    this.authToken = localToken ? JSON.parse(localToken) : this.authToken;
   }
 
   setAuthToken(tokenString: string) {
@@ -48,8 +48,6 @@ export class AuthService {
         token[keyValue[0]] = keyValue[1];
       }
     });
-
-    console.log(token);
 
     this.authToken = <AuthToken>token;
   }

@@ -1,10 +1,14 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AUTH_SPOTIFY_CONFIG, AuthSpotifyConfigConstants} from './constants/auth-spotify-config.constants';
+import {TokenFragmentResolver} from './resolvers/token-fragment.resolver';
 
 @NgModule({
   imports: [
-    CommonModule,
+    CommonModule
+  ],
+  providers: [
+    TokenFragmentResolver
   ]
 })
 export class AuthModule {

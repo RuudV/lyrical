@@ -2,16 +2,13 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from './components';
 
-const authRoutes: Routes = [
+const routes: Routes = [
   {path: '', component: LoginComponent}
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(
-      authRoutes,
-      {enableTracing: false}
-    )
+    RouterModule.forChild(routes)
   ],
   exports: [
     RouterModule
