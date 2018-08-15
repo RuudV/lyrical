@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../../../modules/auth/services';
+import {Store} from '@ngxs/store';
+import {Login} from '../../store/auth.store';
 
 @Component({
   selector: 'app-login',
@@ -8,10 +9,11 @@ import {AuthService} from '../../../../modules/auth/services';
 })
 export class LoginComponent implements OnInit {
 
-  public authorizationUri: string;
+  constructor(private store: Store) {
+  }
 
-  constructor(private authService: AuthService) {
-    this.authorizationUri = this.authService.authorizeUri;
+  login() {
+    this.store.dispatch(new Login());
   }
 
   ngOnInit() {

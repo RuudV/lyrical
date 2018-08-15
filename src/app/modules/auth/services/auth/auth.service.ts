@@ -6,22 +6,6 @@ import {AuthToken} from '../../interfaces/auth-token.interface';
   providedIn: 'root'
 })
 export class AuthService {
-  get authToken(): AuthToken {
-    return this._authToken;
-  }
-
-  set authToken(value: AuthToken) {
-    if (value) {
-      this._authToken = value;
-      sessionStorage.setItem(this.authSpotifyConstants.namespace, JSON.stringify(this.authToken));
-    } else {
-      this._authToken = undefined;
-      sessionStorage.removeItem(this.authSpotifyConstants.namespace);
-    }
-  }
-
-  private _authToken: AuthToken;
-
   readonly authorizeUri: string;
 
   constructor(@Inject(AUTH_SPOTIFY_CONFIG) private authSpotifyConstants: AuthSpotifyConfigConstants) {
@@ -31,12 +15,9 @@ export class AuthService {
       `&scope=${encodeURIComponent(this.authSpotifyConstants.scopes.join(' '))}` +
       `&redirect_uri=${encodeURIComponent(this.authSpotifyConstants.redirect_uri)}` +
       `&show_dialog=${this.authSpotifyConstants.show_dialog}`;
-
-    const localToken = sessionStorage.getItem(this.authSpotifyConstants.namespace);
-    this.authToken = localToken ? JSON.parse(localToken) : this.authToken;
   }
 
-  setAuthToken(tokenString: string) {
+  getAuthTokenFromTokenString(tokenString: string): AuthToken {
     const token = {};
 
     const segments = tokenString.split('&');
@@ -49,6 +30,10 @@ export class AuthService {
       }
     });
 
-    this.authToken = <AuthToken>token;
+    return <AuthToken>token;
+  }
+
+  login() {
+    window.location.href = this.authorizeUri;
   }
 }

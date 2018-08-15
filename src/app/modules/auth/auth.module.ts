@@ -1,14 +1,21 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AUTH_SPOTIFY_CONFIG, AuthSpotifyConfigConstants} from './constants/auth-spotify-config.constants';
-import {TokenFragmentResolver} from './resolvers/token-fragment.resolver';
+import {NgxsModule} from '@ngxs/store';
+import {AuthState} from './store/auth.store';
+import {LoginComponent} from './containers/login/login.component';
+import {AuthRoutingModule} from './auth-routing.module';
+import {CallbackComponent} from './containers/callback/callback.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    NgxsModule.forFeature([AuthState]),
+    AuthRoutingModule
   ],
-  providers: [
-    TokenFragmentResolver
+  declarations: [
+    LoginComponent,
+    CallbackComponent
   ]
 })
 export class AuthModule {

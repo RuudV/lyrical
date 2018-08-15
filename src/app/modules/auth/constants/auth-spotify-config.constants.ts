@@ -15,9 +15,9 @@ export interface AuthSpotifyConfigConstants {
 export const AuthSpotifyConfigConstants: AuthSpotifyConfigConstants = {
   client_id: '463a80fa1c9049e7901a5fe1bde8462a',
   response_type: 'token',
-  redirect_uri: 'http://localhost:4200/player',
-  scopes: ['streaming', 'user-read-birthdate', 'user-read-email', 'user-read-private'],
-  show_dialog: true,
+  redirect_uri: 'http://localhost:4200/auth/callback',
+  scopes: ['streaming', 'user-read-birthdate', 'user-read-email', 'user-read-private', 'user-read-playback-state'],
+  show_dialog: false,
   authorize_uri: 'https://accounts.spotify.com/authorize',
   namespace: 'spotify-auth-code'
 };

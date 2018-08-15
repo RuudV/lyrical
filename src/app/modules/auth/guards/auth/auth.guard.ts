@@ -2,37 +2,38 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AuthService} from '../../services';
+import {AuthState, SaveAuthenticatedRedirectUrl} from '../../store/auth.store';
+import {Store} from '@ngxs/store';
+import {map, tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private store: Store) {
   }
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    state: RouterStateSnapshot): Observable<boolean> {
 
-    const {fragment} = next;
-    if (fragment) {
-      this.authService.setAuthToken(fragment);
-      this.router.navigateByUrl(state.url.split('#')[0])
-        .then(() => console.log('[AUTH GUARD] - Access Token from hash fragment redirect to url without fragment'));
-    }
-
-    if (!this.authService.authToken) {
-      this.router.navigateByUrl('/login')
-        .then(() => console.log('[AUTH GUARD] - No Access Token redirect to /login'));
-    }
-
-    return !!this.authService.authToken;
+    return this.store.select(AuthState.token)
+      .pipe(
+        map((token) => !!token),
+        tap((authenticated: boolean) => {
+          if (!authenticated) {
+            const {url} = state;
+            this.store.dispatch(new SaveAuthenticatedRedirectUrl(url))
+              .subscribe(() => this.router.navigate(['/auth/login']));
+          }
+        }));
   }
 
   canActivateChild(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    state: RouterStateSnapshot): Observable<boolean> {
     return this.canActivate(next, state);
   }
 }

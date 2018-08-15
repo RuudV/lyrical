@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {AuthService} from '../../../../modules/auth/services';
 import {SpotifyPlayerService} from '../../../../modules/spotify-player/services/spotify-player.service';
-import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-player',
@@ -19,21 +18,21 @@ export class PlayerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.spotifyPlayerService.initPlayer()
-      .pipe(take(1))
-      .subscribe(player => {
-        this.player = player;
+    // this.spotifyPlayerService.initPlayer()
+    //   .pipe(take(1))
+    //   .subscribe(player => {
+    //     this.player = player;
+    //
+    //     this.player.connect();
+    //   });
 
-        this.player.connect();
-      });
 
-
-    let headers = new HttpHeaders();
-    headers = headers.set('Authorization', `${this.authService.authToken.token_type} ${this.authService.authToken.access_token}`);
-    this.http.get('https://api.spotify.com/v1/me', {headers: headers})
-      .subscribe(response => {
-        this.userProfile = response;
-      });
+    // let headers = new HttpHeaders();
+    // headers = headers.set('Authorization', `${this.authService.authToken.token_type} ${this.authService.authToken.access_token}`);
+    // this.http.get('https://api.spotify.com/v1/me', {headers: headers})
+    //   .subscribe(response => {
+    //     this.userProfile = response;
+    //   });
   }
 
 }
