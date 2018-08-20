@@ -1,0 +1,16 @@
+<p>
+  overview works!
+</p>
+
+<ul>
+  <li *ngFor="let track of tracks$ | async" [routerLink]="['/player/song', track.track.id]">
+    <img width="300"
+         height="300"
+         [srcset]="track.track.album.images | srcSet">
+
+    <ng-container *ngFor="let artist of track.track.artists; let i = index">
+      {{ i > 0 ? ', ' + artist.name : artist.name }}
+    </ng-container>
+    - {{ track.track.name }}
+  </li>
+</ul>
